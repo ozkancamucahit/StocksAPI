@@ -4,10 +4,11 @@ namespace api.Models
 {
     public sealed class Stock
     {
+        #region FIELDS
         public int Id { get; private set; }
 
-        public string Symbol { get; private set; } = String.Empty;
-        public string CompanyName { get; private set; } = String.Empty;
+        public string Symbol { get; set; } = String.Empty;
+        public string CompanyName { get; set; } = String.Empty;
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Purchase { get; set; }
@@ -20,6 +21,7 @@ namespace api.Models
         public long MarketCap { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; } = Enumerable.Empty<Comment>();
+        #endregion
 
     }
 }
