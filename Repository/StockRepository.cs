@@ -52,11 +52,22 @@ namespace api.Repository
         #endregion
 
 
-        public async Task<IEnumerable<Stock>> GetAllAsync()
+        public async Task<IEnumerable<Stock>> GetAllAsync(Helpers.QueryObject query)
         {
-            return await context.Stocks
-                    .AsNoTracking()
-                    .ToListAsync();
+            var stocks = context.Stocks.AsNoTracking();
+
+            if(!String.IsNullOrWhiteSpace(query.CompanyName))
+            {
+                stocks = stocks.Where(s => s.CompanyName.Contains(query.CompanyName.Trim()));
+            }
+
+            if(!String.IsNullOrWhiteSpace(query.Symbol))
+            {
+                stocks = stocks.Where(s => s.Symbol.Contains(query.Symbol.Trim()));
+            }
+
+            return await stocks.ToListAsync();
+
         }
 
         public async Task<Stock?> GetByIdAsync(int id)

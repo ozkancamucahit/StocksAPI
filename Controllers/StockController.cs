@@ -1,5 +1,6 @@
 ﻿using api.Data;
 using api.DTOs.Stock;
+using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -31,11 +32,11 @@ namespace api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Stocks()
+        public async Task<IActionResult> Stocks([FromQuery] QueryObject query)
         {
             try
             {
-                var stocks = (await repository.GetAllAsync())
+                var stocks = (await repository.GetAllAsync(query))
                                 .Select(s => s.ToStockDTO());
 
                 if (stocks.Any())

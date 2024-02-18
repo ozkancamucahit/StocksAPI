@@ -53,7 +53,9 @@ namespace api.Repository
 
         public async Task<IEnumerable<Comment>> GetAllAsync()
         {
-            return await context.Comments.ToListAsync();
+            return await context.Comments
+                        .AsNoTracking()
+                        .ToListAsync();
 
         }
 
