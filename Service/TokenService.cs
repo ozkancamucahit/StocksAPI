@@ -38,7 +38,8 @@ namespace api.Service
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddDays(3),
                 Issuer = configuration["JWT:Issuer"],
-                Audience = configuration["JWT:Audience"]
+                Audience = configuration["JWT:Audience"],
+                SigningCredentials = creds
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
