@@ -16,7 +16,7 @@ namespace api.Controllers
 
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
-    public class StockController : ControllerBase
+    public sealed class StockController : ControllerBase
     {
         private readonly IStockRepository repository;
 
