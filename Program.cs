@@ -39,7 +39,7 @@ builder.Services
 builder.Services
     .AddAuthentication(opt =>
     {
-        opt.DefaultAuthenticateScheme = 
+        opt.DefaultAuthenticateScheme =
         opt.DefaultChallengeScheme =
         opt.DefaultForbidScheme =
         opt.DefaultScheme =
