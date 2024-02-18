@@ -1,9 +1,10 @@
 ﻿using api.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data
 {
-    public sealed class ApplicationDbContext :DbContext
+    public sealed class ApplicationDbContext :IdentityDbContext<AppUser>
     {
         #region CTOR
         public ApplicationDbContext( DbContextOptions dbContextOptions) : base(dbContextOptions)
