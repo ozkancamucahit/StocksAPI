@@ -25,6 +25,7 @@ builder.Services
     })
     .AddScoped<IStockRepository, StockRepository>()
     .AddScoped<ICommentRepository, CommentRepository>()
+    .AddScoped<IPortfolioRepository, PortfolioRepository>()
     .AddScoped<ITokenService, TokenService>()
     .AddIdentity<AppUser, IdentityRole>(opt =>
     {

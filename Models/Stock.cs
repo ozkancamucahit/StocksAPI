@@ -6,7 +6,7 @@ namespace api.Models
     public sealed class Stock
     {
         #region FIELDS
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         public string Symbol { get; set; } = String.Empty;
         public string CompanyName { get; set; } = String.Empty;
