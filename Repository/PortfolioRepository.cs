@@ -18,6 +18,18 @@ namespace api.Repository
         {
             this.context = context;
         }
+
+        public async Task<Portfolio> CreateAsync(Portfolio portfolio)
+        {
+            await context.Portfolios.AddAsync(portfolio);
+
+            int rows = await context.SaveChangesAsync();
+
+            if (rows != 1)
+                throw new InvalidOperationException("Could not create portfolio");
+            else
+                return portfolio;
+        }
         #endregion
 
 

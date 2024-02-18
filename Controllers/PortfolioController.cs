@@ -50,6 +50,45 @@ namespace api.Controllers
             }
         }
 
+        [HttpPost("{symbol:alpha:length(4,6):required}",Name = "AddPortfolio")]
+        [Authorize]
+        public async Task<IActionResult> AddPortfolio(string symbol)
+        {
+            try
+            {
+                var userName = User.GetUserName();
+                var appUser = await userManager.FindByNameAsync(userName);
+                var stock = await stockRepository.GetBySymbolAsync(symbol);
+
+                if (stock is null)
+                {
+                    return BadRequest("Stock not found");
+                }
+
+                var userPortfolio = await portfolioRepository.GetUserPortfolio(appUser!);
+
+                if(userPortfolio.Any(e =>  e.Symbol.ToLower().Trim() == symbol.ToLower().Trim()))
+                {
+                    return BadRequest("Cannot add same stock to portfolio");
+                }
+
+                var portfolioModel = new Portfolio
+                {
+                    StockId = stock.Id,
+                    AppUserId = appUser.Id
+                };
+
+                await portfolioRepository.CreateAsync(portfolioModel);
+                return Created();
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
 
     }
 }

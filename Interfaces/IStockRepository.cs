@@ -8,6 +8,7 @@ namespace api.Interfaces
     {
         Task<IEnumerable<Stock>> GetAllAsync(Helpers.QueryObject query);
         Task<Stock?> GetByIdAsync(int id);
+        Task<Stock?> GetBySymbolAsync(string symbol);
         Task<Stock> CreateAsync(Stock stockModel);
         Task<Stock?> UpdateAsync(int id, UpdateStockRequestDTO updateStockRequestDTO);
         Task<Stock?> DeleteAsync(int id);
