@@ -136,6 +136,32 @@ namespace api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        
+        
+        [HttpPut("{id:int:required}", Name = "UpdateComment")]
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateComment([FromRoute] int id, [FromBody] UpdateCommentRequestDTO comment)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                Comment? commentModel = await commentRepository.UpdateAsync(id, comment);
+
+                if (commentModel is null)
+                    return NotFound(comment);
+                else
+                    return Ok(commentModel.ToCommentDTO());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
 
 
