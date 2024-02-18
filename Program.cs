@@ -2,6 +2,7 @@ using api.Data;
 using api.Interfaces;
 using api.Models;
 using api.Repository;
+using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ builder.Services
     })
     .AddScoped<IStockRepository, StockRepository>()
     .AddScoped<ICommentRepository, CommentRepository>()
+    .AddScoped<ITokenService, TokenService>()
     .AddIdentity<AppUser, IdentityRole>(opt =>
     {
         opt.Password.RequireDigit = true;
