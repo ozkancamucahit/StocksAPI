@@ -18,6 +18,8 @@ namespace api.Repository
         {
             this.context = context;
         }
+        #endregion
+
 
         public async Task<Portfolio> CreateAsync(Portfolio portfolio)
         {
@@ -30,7 +32,26 @@ namespace api.Repository
             else
                 return portfolio;
         }
-        #endregion
+
+        public async Task<Portfolio> DeletePortfolio(AppUser user, string symbol)
+        {
+            var portfolioModel = await context.Portfolios
+                .FirstOrDefaultAsync(p => p.AppUserId == user.Id && p.Stock.Symbol.ToLower() == symbol);
+
+            if(portfolioModel == null)
+            {
+                return null;
+            }
+
+            context.Portfolios.Remove(portfolioModel);
+            int rows = await context.SaveChangesAsync();
+
+            if (rows != 1)
+                throw new InvalidOperationException("Could not delete");
+            else
+                return portfolioModel;
+
+        }
 
 
         public async Task<List<Stock>> GetUserPortfolio(AppUser user)
