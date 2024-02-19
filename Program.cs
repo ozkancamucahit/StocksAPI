@@ -27,6 +27,7 @@ builder.Services
     .AddScoped<ICommentRepository, CommentRepository>()
     .AddScoped<IPortfolioRepository, PortfolioRepository>()
     .AddScoped<ITokenService, TokenService>()
+    .AddScoped<IFMPService, FMPService>()
     .AddIdentity<AppUser, IdentityRole>(opt =>
     {
         opt.Password.RequireDigit = true;
@@ -36,6 +37,8 @@ builder.Services
         opt.Password.RequiredLength = 8;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddHttpClient<IFMPService, FMPService>();
 
 builder.Services
     .AddAuthentication(opt =>
@@ -90,7 +93,6 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
-
 
 
 var app = builder.Build();

@@ -32,6 +32,19 @@ namespace api.Mappers
                 Purchase = model.Purchase
             };
         }
+        
+        public static Stock ToStockDTO(this FMPStock model)
+        {
+            return new Stock()
+            {
+                Symbol = model.symbol,
+                CompanyName = model.companyName,
+                Industry = model.industry,
+                LastDiv = (decimal)model.lastDiv,
+                MarketCap = model.mktCap,
+                Purchase = (decimal)model.price
+            };
+        }
 
 
     }
