@@ -51,13 +51,26 @@ namespace api.Repository
             return stockModel;
         }
 
-        public async Task<IEnumerable<Comment>> GetAllAsync()
+        public async Task<IEnumerable<Comment>> GetAllAsync(Helpers.CommentQueryObject queryObject)
         {
-            return await context.Comments
+            var comments = context.Comments
                         .AsNoTracking()
                         .Include(c => c.AppUser)
-                        .ToListAsync();
+                        .AsQueryable();
 
+            if(!String.IsNullOrWhiteSpace(queryObject.Symbol))
+            {
+                comments = comments.Where(s => s.Stock.Symbol == queryObject.Symbol);
+            }
+            if(queryObject.IsDesc == true)
+            {
+                comments = comments.OrderByDescending(c => c.CreatedOn);
+            }
+            else
+                comments = comments.OrderBy(c => c.CreatedOn);
+
+
+            return await comments.ToListAsync();
         }
 
         public async Task<Comment?> GetByIdAsync(int id)

@@ -1,6 +1,7 @@
 using api.Data;
 using api.DTOs.Comment;
 using api.Extensions;
+using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -42,15 +43,16 @@ namespace api.Controllers
 
 
         [HttpGet(Name = "GetAllComments")]
+        [Authorize]
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetAllComments()
+        public async Task<ActionResult<IEnumerable<Comment>>> GetAllComments([FromQuery]CommentQueryObject queryObject)
         {
             try
             {
-                var comments = (await commentRepository.GetAllAsync())
+                var comments = (await commentRepository.GetAllAsync(queryObject))
                                 .Select(s => s.ToCommentDTO());
 
                 if (comments.Any())
@@ -91,7 +93,7 @@ namespace api.Controllers
         }
         
         
-        [HttpPost("{symbol:alpha:required:length(4,6)}", Name = "Create")]
+        [HttpPost("{symbol:alpha:required:length(2,10)}", Name = "Create")]
         [Authorize]
         
         [ProducesResponseType(StatusCodes.Status201Created)]
