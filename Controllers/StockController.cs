@@ -39,7 +39,7 @@ namespace api.Controllers
             try
             {
                 var stocks = (await repository.GetAllAsync(query))
-                                .Select(s => s.ToStockDTO());
+                                .Select(s => s.ToStockDTO()).ToList();
 
                 if (stocks.Any())
                     return Ok(stocks);

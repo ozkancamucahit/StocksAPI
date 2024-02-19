@@ -9,6 +9,8 @@
 
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
+        public string CreatedBy { get; set; } = String.Empty;
+
         public int? StockId { get; set; }
     }
 }

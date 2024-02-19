@@ -55,6 +55,7 @@ namespace api.Repository
         {
             return await context.Comments
                         .AsNoTracking()
+                        .Include(c => c.AppUser)
                         .ToListAsync();
 
         }
@@ -62,7 +63,9 @@ namespace api.Repository
         public async Task<Comment?> GetByIdAsync(int id)
         {
             var comment = await context.Comments
-                    .FindAsync(id);
+                    .AsNoTracking()
+                    .Include(c => c.AppUser)
+                    .FirstOrDefaultAsync(c => c.Id == id);
 
             if (comment is null)
                 return null;

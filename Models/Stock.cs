@@ -21,7 +21,7 @@ namespace api.Models
 
         public long MarketCap { get; set; }
 
-        public IEnumerable<Comment> Comments { get; set; } = Enumerable.Empty<Comment>();
+        public List<Comment> Comments { get; set; } = new();
         public List<Portfolio> Portfolios { get; set; } = new();
 
         #endregion

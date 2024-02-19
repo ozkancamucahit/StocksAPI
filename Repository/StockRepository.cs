@@ -52,9 +52,14 @@ namespace api.Repository
         #endregion
 
 
-        public async Task<IEnumerable<Stock>> GetAllAsync(Helpers.QueryObject query)
+        public async Task<List<Stock>> GetAllAsync(Helpers.QueryObject query)
         {
-            var stocks = context.Stocks.AsNoTracking();
+            var stocks = context.Stocks
+            .AsNoTracking()
+            .Include(s => s.Comments)
+            .ThenInclude(a => a.AppUser)
+            .AsQueryable();
+
 
             if(!String.IsNullOrWhiteSpace(query.CompanyName))
             {
@@ -83,7 +88,8 @@ namespace api.Repository
         public async Task<Stock?> GetByIdAsync(int id)
         {
             var stock = await context.Stocks
-                    .FindAsync(id);
+                    .Include(s => s.Comments)
+                    .FirstOrDefaultAsync( s => s.Id == id);
 
             if (stock is null)
                 return null;

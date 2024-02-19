@@ -1,9 +1,12 @@
 using api.Data;
 using api.DTOs.Comment;
+using api.Extensions;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mime;
@@ -21,15 +24,17 @@ namespace api.Controllers
         #region FIELDS
         private readonly ICommentRepository commentRepository;
         private readonly IStockRepository stockRepository;
+        private readonly UserManager<AppUser> userManager;
 
         #endregion
 
         #region CTOR
         public CommentController(ICommentRepository commentRepository,
-        IStockRepository stockRepository)
+        IStockRepository stockRepository, UserManager<AppUser> userManager)
         {
             this.commentRepository = commentRepository;
             this.stockRepository = stockRepository;
+            this.userManager = userManager;
         }
         #endregion
 
@@ -85,7 +90,8 @@ namespace api.Controllers
         
         
         [HttpPost("{stockId:int:required}", Name = "Create")]
-
+        [Authorize]
+        
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -103,7 +109,11 @@ namespace api.Controllers
                     return BadRequest("Stock does not exist");
                 }
 
+                var userName = User.GetUserName();
+                var appUser = await userManager.FindByNameAsync(userName);
                 var commentModel = commentDTO.ToCommentFromCreateDTO(stockId);
+                commentModel.AppUserId = appUser.Id;
+
                 await commentRepository.CreateAsync(commentModel);
                 return CreatedAtRoute("GetById", new { commentModel.Id }, commentModel.ToCommentDTO());
             }
