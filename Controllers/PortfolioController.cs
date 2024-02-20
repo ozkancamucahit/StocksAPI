@@ -92,7 +92,7 @@ namespace api.Controllers
                 };
 
                 await portfolioRepository.CreateAsync(portfolioModel);
-                return Created();
+                return CreatedAtAction("UserPortfolio", symbol);
 
 
             }
